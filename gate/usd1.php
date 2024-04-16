@@ -65,7 +65,7 @@ curl_setopt($ch, CURLOPT_POSTFIELDS, 'type=card&card[number]='.$cc.'&card[exp_mo
 $result1 = curl_exec($ch);
 $tok1 = Getstr($result1,'"id": "','"');
 $msg = Getstr($result1,'"message": "','"');
-//echo "<br><b>Result1: </b> $result1<br>";
+echo "<br><b>Result1: </b> $result1<br>";
 if (strpos($result1, "rate_limit"))   
 {  
     $x++;  
@@ -89,6 +89,7 @@ curl_setopt($ch, CURLOPT_POSTFIELDS, 'amount='.$chr.'&currency=usd&payment_metho
 $result2 = curl_exec($ch);
 $tok2 = Getstr($result2,'"id": "','"');
 $receipturl = trim(strip_tags(getStr($result2,'"receipt_url": "','"')));
+echo "<br><b>Result2: </b> $result2<br>";
 if (strpos($result2, "rate_limit"))   
 {  
     $x++;  
